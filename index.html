@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nexus — The Operating System for Every Business</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0a0a0f;
+    --paper: #f5f3ee;
+    --cream: #ede9e0;
+    --acid: #c8f135;
+    --rust: #e85d35;
+    --slate: #2a2a3d;
+    --mist: #9e9ea8;
+    --card-bg: #ffffff;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1000;
+    opacity: 0.4;
+  }
+
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 900;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.25rem 4rem;
+    background: rgba(245,243,238,0.88);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(10,10,15,0.08);
+  }
+
+  .logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 1.5rem;
+    letter-spacing: -0.04em;
+    color: var(--ink);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .logo-dot {
+    width: 8px; height: 8px;
+    background: var(--rust);
+    border-radius: 50%;
+    display: inline-block;
+  }
+
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a {
+    font-size: 0.88rem;
+    font-weight: 500;
+    color: var(--slate);
+    text-decoration: none;
+    letter-spacing: 0.02em;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--ink); }
+
+  .nav-cta {
+    background: var(--ink) !important;
+    color: var(--paper) !important;
+    padding: 0.55rem 1.4rem !important;
+    border-radius: 2rem;
+    transition: background 0.2s, transform 0.2s !important;
+  }
+  .nav-cta:hover { background: var(--rust) !important; transform: translateY(-1px); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    padding: 8rem 4rem 4rem;
+    gap: 4rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-bg-shape {
+    position: absolute;
+    right: -120px; top: 50%;
+    transform: translateY(-50%);
+    width: 650px; height: 650px;
+    background: radial-gradient(ellipse at center, var(--cream) 0%, transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--ink);
+    color: var(--acid);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.35rem 0.9rem;
+    border-radius: 2rem;
+    margin-bottom: 1.5rem;
+    animation: fadeUp 0.6s ease both;
+  }
+
+  .hero-badge-dot {
+    width: 5px; height: 5px;
+    background: var(--acid);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+
+  .hero-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(3rem, 5vw, 4.8rem);
+    font-weight: 800;
+    line-height: 1.0;
+    letter-spacing: -0.04em;
+    color: var(--ink);
+    animation: fadeUp 0.7s 0.1s ease both;
+  }
+
+  .hero-title em {
+    font-style: normal;
+    color: var(--rust);
+    position: relative;
+  }
+
+  .hero-title em::after {
+    content: '';
+    position: absolute;
+    bottom: 2px; left: 0; right: 0;
+    height: 3px;
+    background: var(--rust);
+    border-radius: 2px;
+    transform: scaleX(0);
+    transform-origin: left;
+    animation: underlineIn 0.6s 0.9s ease forwards;
+  }
+
+  .hero-sub {
+    margin-top: 1.5rem;
+    font-size: 1.1rem;
+    font-weight: 300;
+    line-height: 1.7;
+    color: #4a4a5a;
+    max-width: 460px;
+    animation: fadeUp 0.7s 0.2s ease both;
+  }
+
+  .hero-actions {
+    margin-top: 2.5rem;
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    animation: fadeUp 0.7s 0.3s ease both;
+  }
+
+  .btn-primary {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 0.85rem 2rem;
+    border-radius: 3rem;
+    font-size: 0.95rem;
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: background 0.25s, transform 0.25s, box-shadow 0.25s;
+  }
+  .btn-primary:hover {
+    background: var(--rust);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 32px rgba(232,93,53,0.3);
+  }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--ink);
+    padding: 0.85rem 2rem;
+    border-radius: 3rem;
+    font-size: 0.95rem;
+    font-weight: 500;
+    border: 1.5px solid rgba(10,10,15,0.2);
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .btn-ghost:hover { border-color: var(--ink); transform: translateY(-2px); }
+
+  .hero-trust {
+    margin-top: 3rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    animation: fadeUp 0.7s 0.4s ease both;
+  }
+
+  .trust-avatars { display: flex; }
+  .trust-avatars span {
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    border: 2px solid var(--paper);
+    margin-left: -8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.75rem; font-weight: 600; color: white; flex-shrink:0;
+  }
+  .trust-avatars span:first-child { background: #5b6abf; margin-left: 0; }
+  .trust-avatars span:nth-child(2) { background: #bf5b8e; }
+  .trust-avatars span:nth-child(3) { background: #5bbf8e; }
+  .trust-avatars span:nth-child(4) { background: #bf9e5b; }
+
+  .trust-text { font-size: 0.82rem; color: var(--mist); line-height: 1.4; }
+  .trust-text strong { display: block; color: var(--ink); font-weight: 600; }
+
+  /* DASHBOARD VISUAL */
+  .hero-visual { position: relative; animation: fadeUp 0.8s 0.25s ease both; }
+
+  .dashboard-card {
+    background: var(--ink);
+    border-radius: 20px;
+    padding: 1.5rem;
+    box-shadow: 0 40px 80px rgba(10,10,15,0.2), 0 0 0 1px rgba(255,255,255,0.05);
+    position: relative;
+    overflow: hidden;
+  }
+  .dashboard-card::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 200px; height: 200px;
+    background: radial-gradient(circle, rgba(200,241,53,0.12) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+
+  .dash-topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+  }
+  .dash-dots { display: flex; gap: 6px; }
+  .dash-dots span { width: 9px; height: 9px; border-radius: 50%; background: rgba(255,255,255,0.15); }
+  .dash-title { font-family: 'Syne', sans-serif; font-size: 0.75rem; color: rgba(255,255,255,0.4); letter-spacing: 0.1em; text-transform: uppercase; }
+
+  .dash-metrics { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; margin-bottom: 1.5rem; }
+  .metric-box { background: rgba(255,255,255,0.05); border-radius: 10px; padding: 1rem; border: 1px solid rgba(255,255,255,0.06); }
+  .metric-label { font-size: 0.65rem; color: rgba(255,255,255,0.35); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.4rem; }
+  .metric-value { font-family: 'Syne', sans-serif; font-size: 1.4rem; font-weight: 700; color: #fff; letter-spacing: -0.03em; }
+  .metric-change { font-size: 0.68rem; color: var(--acid); margin-top: 0.2rem; }
+
+  .dash-chart-area {
+    background: rgba(255,255,255,0.03);
+    border-radius: 10px;
+    padding: 1rem;
+    height: 100px;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.05);
+  }
+  .chart-bars { display: flex; align-items: flex-end; gap: 4px; height: 70px; }
+  .bar { flex: 1; border-radius: 3px 3px 0 0; background: rgba(255,255,255,0.12); animation: barGrow 0.8s ease both; }
+  .bar.active { background: var(--acid); }
+  .bar:nth-child(1)  { height: 35%; animation-delay:.1s }
+  .bar:nth-child(2)  { height: 55%; animation-delay:.15s }
+  .bar:nth-child(3)  { height: 45%; animation-delay:.2s }
+  .bar:nth-child(4)  { height: 70%; animation-delay:.25s }
+  .bar:nth-child(5)  { height: 60%; animation-delay:.3s }
+  .bar:nth-child(6)  { height: 85%; animation-delay:.35s }
+  .bar:nth-child(7)  { height: 75%; animation-delay:.4s }
+  .bar:nth-child(8)  { height: 90%; animation-delay:.45s }
+  .bar:nth-child(9)  { height: 80%; animation-delay:.5s }
+  .bar:nth-child(10) { height: 95%; animation-delay:.55s }
+  .bar:nth-child(11) { height: 88%; animation-delay:.6s }
+  .bar.active        { height:100%; animation-delay:.65s }
+  .chart-label { font-size: 0.6rem; color: rgba(255,255,255,0.25); margin-top: 0.5rem; text-transform: uppercase; letter-spacing: 0.06em; }
+
+  .float-tag {
+    position: absolute; top: -14px; right: -10px;
+    background: var(--rust); color: white;
+    font-size: 0.72rem; font-weight: 600;
+    padding: 0.35rem 0.75rem; border-radius: 2rem;
+    box-shadow: 0 8px 24px rgba(232,93,53,0.4);
+    animation: float 3s ease-in-out infinite;
+    white-space: nowrap;
+  }
+  .float-tag2 {
+    position: absolute; bottom: -14px; left: -10px;
+    background: var(--card-bg); color: var(--ink);
+    font-size: 0.72rem; font-weight: 600;
+    padding: 0.5rem 1rem; border-radius: 1rem;
+    box-shadow: 0 8px 24px rgba(10,10,15,0.12);
+    animation: float 3s 1.5s ease-in-out infinite;
+    display: flex; align-items: center; gap: 0.4rem;
+    white-space: nowrap;
+  }
+  .status-dot { width: 6px; height: 6px; background: #22c55e; border-radius: 50%; animation: pulse 2s infinite; }
+
+  /* LOGOS */
+  .logos-strip {
+    padding: 3rem 4rem;
+    text-align: center;
+    border-top: 1px solid rgba(10,10,15,0.07);
+    border-bottom: 1px solid rgba(10,10,15,0.07);
+  }
+  .logos-label { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--mist); margin-bottom: 2rem; }
+  .logos-row { display: flex; justify-content: center; align-items: center; gap: 3.5rem; flex-wrap: wrap; }
+  .logo-item { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1rem; color: rgba(10,10,15,0.2); letter-spacing: -0.02em; transition: color 0.3s; cursor: default; }
+  .logo-item:hover { color: rgba(10,10,15,0.5); }
+
+  /* SECTIONS */
+  .section { padding: 7rem 4rem; }
+  .section-tag {
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    font-size: 0.75rem; font-weight: 600; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--rust); margin-bottom: 1rem;
+  }
+  .section-tag::before { content: ''; display: block; width: 20px; height: 1.5px; background: var(--rust); }
+  .section-title { font-family: 'Syne', sans-serif; font-size: clamp(2rem, 3.5vw, 3rem); font-weight: 800; letter-spacing: -0.04em; line-height: 1.1; color: var(--ink); max-width: 640px; }
+  .section-sub { font-size: 1rem; color: #6a6a7a; font-weight: 300; line-height: 1.7; max-width: 520px; margin-top: 1rem; }
+
+  /* SERVICES */
+  .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: 3.5rem; }
+
+  .service-card {
+    background: var(--card-bg);
+    border-radius: 16px; padding: 2rem;
+    border: 1px solid rgba(10,10,15,0.08);
+    position: relative; overflow: hidden;
+    transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+    cursor: default;
+  }
+  .service-card:hover { transform: translateY(-4px); box-shadow: 0 20px 48px rgba(10,10,15,0.1); border-color: rgba(10,10,15,0.15); }
+  .service-card.featured { background: var(--ink); border-color: transparent; }
+  .service-card.featured:hover { box-shadow: 0 20px 48px rgba(10,10,15,0.25); }
+
+  .service-icon { width: 44px; height: 44px; border-radius: 10px; background: var(--cream); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; margin-bottom: 1.4rem; }
+  .service-card.featured .service-icon { background: rgba(200,241,53,0.15); }
+
+  .service-name { font-family: 'Syne', sans-serif; font-size: 1.15rem; font-weight: 700; color: var(--ink); letter-spacing: -0.02em; margin-bottom: 0.6rem; }
+  .service-card.featured .service-name { color: #fff; }
+
+  .service-desc { font-size: 0.88rem; color: #6a6a7a; line-height: 1.65; font-weight: 300; }
+  .service-card.featured .service-desc { color: rgba(255,255,255,0.5); }
+
+  .service-link { display: inline-flex; align-items: center; gap: 0.3rem; margin-top: 1.5rem; font-size: 0.82rem; font-weight: 600; color: var(--rust); text-decoration: none; transition: gap 0.2s; }
+  .service-card.featured .service-link { color: var(--acid); }
+  .service-link:hover { gap: 0.6rem; }
+
+  .service-card-corner { position: absolute; bottom: -20px; right: -20px; width: 80px; height: 80px; border-radius: 50%; background: rgba(10,10,15,0.03); pointer-events: none; }
+  .service-card.featured .service-card-corner { background: rgba(200,241,53,0.05); }
+
+  /* HOW */
+  .how-section { background: var(--ink); padding: 7rem 4rem; position: relative; overflow: hidden; }
+  .how-section::before { content: ''; position: absolute; top:-100px; left:50%; transform:translateX(-50%); width:600px; height:600px; background: radial-gradient(circle, rgba(200,241,53,0.06) 0%, transparent 70%); pointer-events:none; }
+  .how-section .section-title { color: white; }
+  .how-section .section-sub { color: rgba(255,255,255,0.45); }
+
+  .steps-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; margin-top: 4rem; position: relative; }
+  .steps-grid::before { content: ''; position: absolute; top: 28px; left: 5%; right: 5%; height: 1px; background: linear-gradient(to right, transparent, rgba(255,255,255,0.1) 20%, rgba(255,255,255,0.1) 80%, transparent); z-index: 0; }
+
+  .step-item { position: relative; z-index: 1; text-align: center; }
+  .step-num {
+    width: 56px; height: 56px; border-radius: 50%;
+    background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.1rem; color: rgba(255,255,255,0.5);
+    margin: 0 auto 1.5rem;
+    transition: background 0.3s, border-color 0.3s, color 0.3s;
+  }
+  .step-item:hover .step-num { background: var(--acid); border-color: var(--acid); color: var(--ink); }
+  .step-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1rem; color: white; margin-bottom: 0.6rem; }
+  .step-desc { font-size: 0.83rem; color: rgba(255,255,255,0.38); line-height: 1.65; font-weight: 300; }
+
+  /* PRICING */
+  .pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: 3.5rem; align-items: start; }
+
+  .price-card {
+    border-radius: 16px; padding: 2.5rem 2rem;
+    border: 1px solid rgba(10,10,15,0.08); background: var(--card-bg);
+    transition: transform 0.3s, box-shadow 0.3s; position: relative; overflow: hidden;
+  }
+  .price-card:hover { transform: translateY(-4px); box-shadow: 0 20px 48px rgba(10,10,15,0.1); }
+  .price-card.popular { background: var(--ink); border-color: transparent; transform: scale(1.03); }
+  .price-card.popular:hover { transform: scale(1.03) translateY(-4px); box-shadow: 0 24px 60px rgba(10,10,15,0.25); }
+
+  .popular-badge { position: absolute; top: 1.25rem; right: 1.25rem; background: var(--acid); color: var(--ink); font-size: 0.65rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 0.25rem 0.65rem; border-radius: 2rem; }
+
+  .plan-name { font-family: 'Syne', sans-serif; font-size: 0.8rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--mist); margin-bottom: 0.75rem; }
+  .price-card.popular .plan-name { color: rgba(255,255,255,0.4); }
+
+  .plan-price { font-family: 'Syne', sans-serif; font-size: 3rem; font-weight: 800; letter-spacing: -0.05em; color: var(--ink); line-height: 1; }
+  .price-card.popular .plan-price { color: white; }
+
+  .plan-period { font-size: 0.85rem; color: var(--mist); font-weight: 300; margin-top: 0.25rem; margin-bottom: 1.5rem; }
+  .plan-desc { font-size: 0.85rem; color: #6a6a7a; line-height: 1.6; font-weight: 300; padding-bottom: 1.5rem; margin-bottom: 1.5rem; border-bottom: 1px solid rgba(10,10,15,0.07); }
+  .price-card.popular .plan-desc { color: rgba(255,255,255,0.4); border-bottom-color: rgba(255,255,255,0.07); }
+
+  .plan-features { list-style: none; display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 2rem; }
+  .plan-features li { display: flex; align-items: center; gap: 0.6rem; font-size: 0.87rem; color: #4a4a5a; font-weight: 400; }
+  .price-card.popular .plan-features li { color: rgba(255,255,255,0.7); }
+
+  .feature-check { width: 18px; height: 18px; border-radius: 50%; background: var(--cream); display: flex; align-items: center; justify-content: center; font-size: 0.6rem; color: var(--rust); flex-shrink: 0; }
+  .price-card.popular .feature-check { background: rgba(200,241,53,0.15); color: var(--acid); }
+
+  .plan-btn { width: 100%; padding: 0.9rem; border-radius: 3rem; font-size: 0.9rem; font-weight: 600; font-family: 'DM Sans', sans-serif; cursor: pointer; border: none; transition: background 0.25s, transform 0.2s, box-shadow 0.25s; }
+  .plan-btn-outline { background: transparent; color: var(--ink); border: 1.5px solid rgba(10,10,15,0.2); }
+  .plan-btn-outline:hover { border-color: var(--ink); transform: translateY(-1px); }
+  .plan-btn-filled { background: var(--acid); color: var(--ink); }
+  .plan-btn-filled:hover { background: #d4ff3a; transform: translateY(-2px); box-shadow: 0 10px 28px rgba(200,241,53,0.35); }
+
+  /* TESTIMONIALS */
+  .testimonials-section { background: var(--cream); padding: 7rem 4rem; }
+  .testimonials-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: 3.5rem; }
+
+  .testimonial-card { background: var(--card-bg); border-radius: 16px; padding: 2rem; border: 1px solid rgba(10,10,15,0.06); transition: transform 0.3s; }
+  .testimonial-card:hover { transform: translateY(-3px); }
+  .t-stars { color: var(--rust); font-size: 0.85rem; letter-spacing: 0.05em; margin-bottom: 1rem; }
+  .t-quote { font-size: 0.92rem; line-height: 1.7; color: #3a3a4a; font-weight: 300; margin-bottom: 1.5rem; font-style: italic; }
+  .t-author { display: flex; align-items: center; gap: 0.75rem; }
+  .t-avatar { width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; font-weight: 700; color: white; flex-shrink: 0; }
+  .t-name { font-weight: 600; font-size: 0.87rem; color: var(--ink); }
+  .t-role { font-size: 0.75rem; color: var(--mist); }
+
+  /* CTA */
+  .cta-section { padding: 7rem 4rem; text-align: center; position: relative; overflow: hidden; }
+  .cta-section::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 100%, rgba(232,93,53,0.06) 0%, transparent 70%); pointer-events: none; }
+  .cta-section .section-tag { justify-content: center; }
+  .cta-section .section-title { max-width: none; font-size: clamp(2.5rem, 4vw, 3.8rem); }
+  .cta-section .section-sub { max-width: 500px; margin: 1rem auto 0; text-align: center; }
+  .cta-actions { display: flex; gap: 1rem; justify-content: center; margin-top: 2.5rem; }
+
+  /* FOOTER */
+  footer { background: var(--ink); padding: 4rem; color: rgba(255,255,255,0.4); }
+  .footer-top { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 3rem; padding-bottom: 3rem; border-bottom: 1px solid rgba(255,255,255,0.07); }
+  .footer-brand .logo { color: white; margin-bottom: 1rem; }
+  .footer-tagline { font-size: 0.83rem; line-height: 1.65; color: rgba(255,255,255,0.35); font-weight: 300; max-width: 280px; }
+  .footer-col-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(255,255,255,0.6); margin-bottom: 1.25rem; }
+  .footer-links { list-style: none; display: flex; flex-direction: column; gap: 0.65rem; }
+  .footer-links a { color: rgba(255,255,255,0.3); text-decoration: none; font-size: 0.85rem; font-weight: 300; transition: color 0.2s; }
+  .footer-links a:hover { color: rgba(255,255,255,0.7); }
+  .footer-bottom { display: flex; align-items: center; justify-content: space-between; padding-top: 2rem; }
+  .footer-copy { font-size: 0.8rem; color: rgba(255,255,255,0.2); }
+  .footer-legal { display: flex; gap: 1.5rem; }
+  .footer-legal a { font-size: 0.8rem; color: rgba(255,255,255,0.2); text-decoration: none; transition: color 0.2s; }
+  .footer-legal a:hover { color: rgba(255,255,255,0.5); }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes barGrow { from { transform: scaleY(0); transform-origin: bottom; } to { transform: scaleY(1); transform-origin: bottom; } }
+  @keyframes underlineIn { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+  @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+
+  .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.65s ease, transform 0.65s ease; }
+  .reveal.visible { opacity: 1; transform: none; }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="logo" href="#">Nexus<span class="logo-dot"></span></a>
+  <ul class="nav-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#how">How It Works</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+    <li><a href="#testimonials">Reviews</a></li>
+    <li><a href="#" class="nav-cta">Get Started →</a></li>
+  </ul>
+</nav>
+
+<section class="hero">
+  <div class="hero-bg-shape"></div>
+  <div class="hero-content">
+    <div class="hero-badge"><span class="hero-badge-dot"></span> Now in Public Beta</div>
+    <h1 class="hero-title">One platform.<br>Every business<br><em>operation</em>.</h1>
+    <p class="hero-sub">Nexus gives startups, agencies, retailers, and enterprises a unified command center — from analytics to automation, billing to team management.</p>
+    <div class="hero-actions">
+      <a href="#pricing" class="btn-primary">Start Free Trial →</a>
+      <a href="#how" class="btn-ghost">▶ See Demo</a>
+    </div>
+    <div class="hero-trust">
+      <div class="trust-avatars"><span>MR</span><span>LK</span><span>SO</span><span>TN</span></div>
+      <div class="trust-text"><strong>12,400+ businesses</strong>already running on Nexus</div>
+    </div>
+  </div>
+
+  <div class="hero-visual">
+    <div class="float-tag">+34% Revenue ↑</div>
+    <div class="dashboard-card">
+      <div class="dash-topbar">
+        <div class="dash-dots"><span></span><span></span><span></span></div>
+        <div class="dash-title">Nexus Dashboard</div>
+        <div style="width:50px"></div>
+      </div>
+      <div class="dash-metrics">
+        <div class="metric-box"><div class="metric-label">Revenue</div><div class="metric-value">$84k</div><div class="metric-change">+22% this month</div></div>
+        <div class="metric-box"><div class="metric-label">Active Users</div><div class="metric-value">3.2k</div><div class="metric-change">+8% this week</div></div>
+        <div class="metric-box"><div class="metric-label">Tasks Done</div><div class="metric-value">94%</div><div class="metric-change">↑ on track</div></div>
+      </div>
+      <div class="dash-chart-area">
+        <div class="chart-bars">
+          <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
+          <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
+          <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar active"></div>
+        </div>
+        <div class="chart-label">Monthly performance — last 12 months</div>
+      </div>
+    </div>
+    <div class="float-tag2"><span class="status-dot"></span> All systems operational</div>
+  </div>
+</section>
+
+<div class="logos-strip reveal">
+  <p class="logos-label">Trusted by teams at</p>
+  <div class="logos-row">
+    <span class="logo-item">Archetype</span>
+    <span class="logo-item">Verdant Co.</span>
+    <span class="logo-item">Stoneleaf</span>
+    <span class="logo-item">Ironbark Studio</span>
+    <span class="logo-item">Meridian Health</span>
+    <span class="logo-item">Capsule Labs</span>
+  </div>
+</div>
+
+<section class="section" id="services">
+  <div class="reveal">
+    <span class="section-tag">What We Offer</span>
+    <h2 class="section-title">Built for every industry, out of the box</h2>
+    <p class="section-sub">Whether you run a bakery, a law firm, or a 200-person SaaS company — Nexus adapts to how you work.</p>
+  </div>
+  <div class="services-grid reveal">
+    <div class="service-card featured">
+      <div class="service-icon">⚡</div>
+      <div class="service-name">Business Intelligence</div>
+      <div class="service-desc">Real-time dashboards, custom reports, and AI-powered forecasts that help you understand your business at a glance — no data degree required.</div>
+      <a class="service-link" href="#">Explore BI →</a>
+      <div class="service-card-corner"></div>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">💳</div>
+      <div class="service-name">Billing &amp; Payments</div>
+      <div class="service-desc">Invoicing, subscriptions, one-time charges, and tax compliance — all handled. Connect Stripe, PayPal, or bank transfers in minutes.</div>
+      <a class="service-link" href="#">Learn More →</a>
+      <div class="service-card-corner"></div>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">👥</div>
+      <div class="service-name">CRM &amp; Client Hub</div>
+      <div class="service-desc">Track every client interaction, automate follow-ups, and manage your pipeline without juggling a dozen spreadsheets.</div>
+      <a class="service-link" href="#">Learn More →</a>
+      <div class="service-card-corner"></div>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">🗂️</div>
+      <div class="service-name">Project Management</div>
+      <div class="service-desc">Kanban, Gantt, or list view — your call. Assign tasks, set deadlines, and keep distributed teams moving in sync.</div>
+      <a class="service-link" href="#">Learn More →</a>
+      <div class="service-card-corner"></div>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">🤖</div>
+      <div class="service-name">Workflow Automation</div>
+      <div class="service-desc">Build no-code automations that trigger on any event — form submission, payment received, or custom conditions you define.</div>
+      <a class="service-link" href="#">Learn More →</a>
+      <div class="service-card-corner"></div>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">🔗</div>
+      <div class="service-name">1,000+ Integrations</div>
+      <div class="service-desc">Connect Slack, QuickBooks, Shopify, Gmail, HubSpot, and hundreds more. Your tools, unified — no middleware needed.</div>
+      <a class="service-link" href="#">View All →</a>
+      <div class="service-card-corner"></div>
+    </div>
+  </div>
+</section>
+
+<section class="how-section" id="how">
+  <div class="reveal">
+    <span class="section-tag" style="color:var(--acid)">Simple Onboarding</span>
+    <h2 class="section-title">Up and running in under an hour</h2>
+    <p class="section-sub">We handle the heavy lifting. You focus on running your business.</p>
+  </div>
+  <div class="steps-grid reveal">
+    <div class="step-item">
+      <div class="step-num">01</div>
+      <div class="step-title">Create Your Workspace</div>
+      <div class="step-desc">Sign up and tell us about your business type. Nexus auto-configures the modules you'll actually use.</div>
+    </div>
+    <div class="step-item">
+      <div class="step-num">02</div>
+      <div class="step-title">Connect Your Tools</div>
+      <div class="step-desc">One-click integrations with your existing apps — no API keys, no developers, no downtime.</div>
+    </div>
+    <div class="step-item">
+      <div class="step-num">03</div>
+      <div class="step-title">Invite Your Team</div>
+      <div class="step-desc">Add team members with role-based permissions. Everyone sees exactly what they need to.</div>
+    </div>
+    <div class="step-item">
+      <div class="step-num">04</div>
+      <div class="step-title">Ship, Measure, Grow</div>
+      <div class="step-desc">Your real-time command center is live. Monitor KPIs, automate ops, and scale without friction.</div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="pricing">
+  <div class="reveal">
+    <span class="section-tag">Transparent Pricing</span>
+    <h2 class="section-title">Start free. Scale fearlessly.</h2>
+    <p class="section-sub">No hidden fees, no surprise overages. Cancel anytime.</p>
+  </div>
+  <div class="pricing-grid reveal">
+    <div class="price-card">
+      <div class="plan-name">Starter</div>
+      <div class="plan-price">$0</div>
+      <div class="plan-period">Free forever</div>
+      <div class="plan-desc">Everything you need to get your business off the ground. Perfect for solopreneurs and small teams.</div>
+      <ul class="plan-features">
+        <li><span class="feature-check">✓</span> Up to 3 users</li>
+        <li><span class="feature-check">✓</span> 5 active projects</li>
+        <li><span class="feature-check">✓</span> Basic analytics</li>
+        <li><span class="feature-check">✓</span> 10 automations / month</li>
+        <li><span class="feature-check">✓</span> Community support</li>
+      </ul>
+      <button class="plan-btn plan-btn-outline">Get Started Free</button>
+    </div>
+    <div class="price-card popular">
+      <div class="popular-badge">Most Popular</div>
+      <div class="plan-name">Growth</div>
+      <div class="plan-price">$49</div>
+      <div class="plan-period">per month, billed annually</div>
+      <div class="plan-desc">The full Nexus experience. Designed for growing teams that need power without complexity.</div>
+      <ul class="plan-features">
+        <li><span class="feature-check">✓</span> Unlimited users</li>
+        <li><span class="feature-check">✓</span> Unlimited projects</li>
+        <li><span class="feature-check">✓</span> Advanced analytics &amp; BI</li>
+        <li><span class="feature-check">✓</span> Unlimited automations</li>
+        <li><span class="feature-check">✓</span> CRM &amp; billing included</li>
+        <li><span class="feature-check">✓</span> Priority email support</li>
+        <li><span class="feature-check">✓</span> 500+ integrations</li>
+      </ul>
+      <button class="plan-btn plan-btn-filled">Start 14-Day Trial</button>
+    </div>
+    <div class="price-card">
+      <div class="plan-name">Enterprise</div>
+      <div class="plan-price">Custom</div>
+      <div class="plan-period">tailored to your scale</div>
+      <div class="plan-desc">White-glove onboarding, dedicated infrastructure, and SLAs built for mission-critical operations.</div>
+      <ul class="plan-features">
+        <li><span class="feature-check">✓</span> Everything in Growth</li>
+        <li><span class="feature-check">✓</span> SSO &amp; SAML</li>
+        <li><span class="feature-check">✓</span> Dedicated account manager</li>
+        <li><span class="feature-check">✓</span> Custom integrations</li>
+        <li><span class="feature-check">✓</span> 99.99% uptime SLA</li>
+        <li><span class="feature-check">✓</span> On-premise option</li>
+      </ul>
+      <button class="plan-btn plan-btn-outline">Contact Sales →</button>
+    </div>
+  </div>
+</section>
+
+<section class="testimonials-section" id="testimonials">
+  <div class="reveal" style="text-align:center">
+    <span class="section-tag" style="justify-content:center">Social Proof</span>
+    <h2 class="section-title" style="max-width:none">Loved by every kind of business</h2>
+  </div>
+  <div class="testimonials-grid reveal">
+    <div class="testimonial-card">
+      <div class="t-stars">★★★★★</div>
+      <p class="t-quote">"We replaced six different tools with Nexus. Our ops team went from drowning in tabs to running tight daily standups with actual data. Worth every penny."</p>
+      <div class="t-author"><div class="t-avatar" style="background:#5b6abf">SR</div><div><div class="t-name">Sarah R.</div><div class="t-role">COO, Verdant Co. — E-commerce</div></div></div>
+    </div>
+    <div class="testimonial-card">
+      <div class="t-stars">★★★★★</div>
+      <p class="t-quote">"As a freelance designer running a small studio, Nexus handles my invoicing, client comms, and project timelines. It genuinely feels like having a business partner."</p>
+      <div class="t-author"><div class="t-avatar" style="background:#bf5b8e">JM</div><div><div class="t-name">James M.</div><div class="t-role">Founder, Ironbark Studio — Design Agency</div></div></div>
+    </div>
+    <div class="testimonial-card">
+      <div class="t-stars">★★★★★</div>
+      <p class="t-quote">"We're a 120-person healthcare company. Nexus gave us the compliance tools, audit trails, and reporting we needed — without the enterprise price tag we expected."</p>
+      <div class="t-author"><div class="t-avatar" style="background:#5bbf8e">PT</div><div><div class="t-name">Priya T.</div><div class="t-role">VP Operations, Meridian Health</div></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="cta-section">
+  <div class="reveal">
+    <span class="section-tag">Get Started Today</span>
+    <h2 class="section-title">Your entire business,<br>finally in one place.</h2>
+    <p class="section-sub">Join 12,000+ companies who stopped duct-taping tools together and started actually growing.</p>
+    <div class="cta-actions">
+      <a href="#pricing" class="btn-primary">Start Free — No Card Required</a>
+      <a href="#" class="btn-ghost">Book a Demo</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <a class="logo" href="#" style="display:inline-flex;margin-bottom:1rem">Nexus<span class="logo-dot" style="background:var(--acid)"></span></a>
+      <p class="footer-tagline">The all-in-one operating system built for every business — from solo founders to enterprise teams.</p>
+    </div>
+    <div>
+      <div class="footer-col-title">Product</div>
+      <ul class="footer-links"><li><a href="#">Features</a></li><li><a href="#">Integrations</a></li><li><a href="#">Pricing</a></li><li><a href="#">Changelog</a></li><li><a href="#">Roadmap</a></li></ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Company</div>
+      <ul class="footer-links"><li><a href="#">About</a></li><li><a href="#">Blog</a></li><li><a href="#">Careers</a></li><li><a href="#">Press</a></li><li><a href="#">Contact</a></li></ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Resources</div>
+      <ul class="footer-links"><li><a href="#">Documentation</a></li><li><a href="#">API Reference</a></li><li><a href="#">Community</a></li><li><a href="#">Status Page</a></li><li><a href="#">Support</a></li></ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span class="footer-copy">© 2025 Nexus Technologies, Inc. All rights reserved.</span>
+    <div class="footer-legal"><a href="#">Privacy Policy</a><a href="#">Terms of Service</a><a href="#">Cookie Preferences</a></div>
+  </div>
+</footer>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) { entry.target.classList.add('visible'); observer.unobserve(entry.target); }
+    });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  document.querySelectorAll('.services-grid .service-card, .pricing-grid .price-card, .testimonials-grid .testimonial-card, .steps-grid .step-item').forEach((el, i) => {
+    el.style.transitionDelay = `${i * 0.07}s`;
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(20px)';
+    el.style.transition = 'opacity 0.55s ease, transform 0.55s ease';
+  });
+
+  const childObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.querySelectorAll('.service-card, .price-card, .testimonial-card, .step-item').forEach(child => {
+          child.style.opacity = '1';
+          child.style.transform = 'none';
+        });
+        childObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.services-grid, .pricing-grid, .testimonials-grid, .steps-grid').forEach(g => childObserver.observe(g));
+</script>
+</body>
+</html>
